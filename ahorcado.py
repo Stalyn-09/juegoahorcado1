@@ -2,12 +2,24 @@
 """
 Juego del Ahorcado - Siguiendo el Diagrama de Flujo
 Versión simplificada que sigue exactamente el flujo del diagrama
+
+CÓMO FUNCIONA EL JUEGO:
+1. La computadora elige una palabra secreta al azar
+2. El jugador ve espacios vacíos (_ _ _) representando cada letra
+3. El jugador adivina letra por letra
+4. Si la letra está en la palabra, se revela en su posición
+5. Si no está, se pierde un intento y se dibuja parte del ahorcado
+6. El jugador gana si completa la palabra antes de 6 intentos fallidos
+7. El jugador pierde si se completa el dibujo del ahorcado (6 fallos)
 """
 
-import random
-import os
+# Importamos las librerías que necesitamos:
+import random  # Para elegir palabras al azar de nuestra lista
+import os      # Para limpiar la pantalla de la consola
 
-# Lista de palabras para el juego
+# ---- Lista de palabras para el juego ----
+# Esta es nuestra "base de datos" de palabras posibles
+# El juego elegirá una al azar de esta lista
 PALABRAS = [
     "programacion", "python", "desarrollo", "computadora", "variable",
     "universidad", "ahorcado", "tecnologia", "algoritmo", "internet",
