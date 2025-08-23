@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Juego del Ahorcado - Con Menú Principal
-Versión completa con menú, instrucciones y estadísticas
 
 COMO FUNCIONA EL JUEGO:
 1. La computadora elige una palabra secreta al azar
@@ -13,7 +11,7 @@ COMO FUNCIONA EL JUEGO:
 7. El jugador pierde si se completa el dibujo del ahorcado (6 fallos)
 """
 
-# Importamos las librerías que necesitamos:
+# Importamos las librerías se necesita:
 import random  # Para elegir palabras al azar de nuestra lista
 import os      # Para limpiar la pantalla de la consola
 
