@@ -1,0 +1,125 @@
+Juego del Ahorcado en Python
+Descripción del Proyecto
+Este es un juego clásico del ahorcado implementado en Python para la consola. 
+El juego permite al usuario adivinar una palabra secreta letra por letra, con
+un sistema de intentos limitados y gráficos ASCII del ahorcado.
+Cómo Funciona el Juego
+1. Inicio: La computadora selecciona una palabra secreta al azar de una lista predefinida
+2. Visualización: El jugador ve espacios vacíos (_ _ _) que representan cada letra de la palabra
+3. Adivinanza: El jugador introduce letras una por una
+4. Acierto: Si la letra está en la palabra, se revela en todas sus posiciones
+5. Error: Si la letra no está, se pierde un intento y se dibuja una parte del ahorcado
+6. Victoria: El jugador gana si completa la palabra antes de agotar los 6 intentos
+7. Derrota: El jugador pierde si se completa el dibujo del ahorcado (6 fallos)
+Librerías Utilizadas
+import random  # Para elegir palabras aleatoriamente
+import os      # Para limpiar la pantalla de la consola
+Variables Globales Importantes
+Lista de Palabras
+PALABRAS = [
+    "programacion", "python", "desarrollo", "computadora", 
+    "variable", "universidad", "ahorcado", "tecnologia", 
+    "algoritmo", "internet", "ecuador", "servidor", 
+    "cliente", "archivo", "funcion", "memoria"
+]
+Contiene 16 palabras relacionadas con tecnología y programación
+Se puede expandir fácilmente agregando más palabras
+Gráficos ASCII del Ahorcado
+HANGMAN_PICS = [...]  # Lista con 7 dibujos diferentes
+Índice 0: Ahorcado completo (0 intentos restantes)
+Índice 6: Solo la horca (6 intentos restantes)
+Cada intento fallido muestra progresivamente más partes del ahorcado
+Sistema de Estadísticas
+estadisticas = {
+    'partidas_jugadas': 0,
+    'partidas_ganadas': 0,
+    'partidas_perdidas': 0
+}
+Funciones Principales
+Funciones de Interfaz
+
+limpiar_pantalla(): Limpia la consola 
+mostrar_menu_principal(): Muestra el menú con 4 opciones
+mostrar_instrucciones(): Explica las reglas del juego
+mostrar_estadisticas(): Muestra el rendimiento del jugador
+
+Funciones de Lógica del Juego
+
+generar_palabra_secreta(): Selecciona una palabra aleatoria y la convierte a mayúsculas
+mostrar_espacios_vacios(): Crea la representación visual de la palabra con guiones bajos
+mostrar_estado_juego(): Muestra toda la información del juego actual
+letra_correcta(): Verifica si una letra está en la palabra secreta
+jugador_completa_palabra(): Verifica si se ha adivinado toda la palabra
+jugador_sin_intentos(): Verifica si se agotaron los intentos
+
+Funciones de Entrada del Usuario
+
+obtener_opcion_menu(): Valida la selección del menú (1-4)
+jugador_teclea_letra(): Valida que el usuario ingrese una sola letra
+preguntar_otro_intento(): Pregunta si quiere jugar otra partida
+1. Menú Principal
+JUEGO DEL AHORCADO
+==================
+
+1. Jugar
+2. Como jugar
+3. Estadisticas
+4. Salir
+2. Durante una Partida
+JUEGO DEL AHORCADO
+==================
+     +---+
+     |   |
+         |
+         |
+         |
+         |
+    =========
+
+Palabra: P _ _ G _ _ M _ _ _ _ _
+Letras incorrectas: X, Z
+Intentos restantes: 5
+==================
+3. Lógica de Juego en jugar_partida()
+Inicialización:
+
+Se genera una palabra secreta
+Se crean conjuntos (sets) para letras adivinadas e incorrectas
+Se establecen 6 intentos
+
+
+Bucle Principal:
+
+Mostrar estado actual
+Pedir letra al usuario
+Validar si ya se usó esa letra
+Procesar acierto o error
+Verificar condiciones de victoria/derrota
+
+
+Finalización:
+
+Mostrar resultado final
+Actualizar estadísticas
+Retornar True (victoria) o False (derrota)
+Características Técnicas
+Manejo de Datos
+
+Sets (conjuntos): Se usan para almacenar letras adivinadas e incorrectas
+
+Ventaja: No permite duplicados y búsqueda rápida
+
+Listas: Para palabras y dibujos del ahorcado
+Diccionario: Para las estadísticas del jugador
+Validación de Entrada
+Verifica que sea solo una letra
+Convierte a mayúsculas para consistencia
+Maneja errores de entrada inválida
+Previene letras repetidas
+
+Estrategias de Juego (Consejos)
+El código incluye consejos estratégicos:
+
+Comenzar con vocales (A, E, I, O, U)
+Continuar con consonantes comunes (R, S, T, L, N)
+Pensar en el contexto de las palabras (tecnología/programación)
