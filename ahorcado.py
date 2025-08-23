@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Juego del Ahorcado - Siguiendo el Diagrama de Flujo
-Versión simplificada que sigue exactamente el flujo del diagrama
+Juego del Ahorcado - Con Menú Principal
+Versión completa con menú, instrucciones y estadísticas
 
-CÓMO FUNCIONA EL JUEGO:
+COMO FUNCIONA EL JUEGO:
 1. La computadora elige una palabra secreta al azar
 2. El jugador ve espacios vacíos (_ _ _) representando cada letra
 3. El jugador adivina letra por letra
@@ -18,8 +18,6 @@ import random  # Para elegir palabras al azar de nuestra lista
 import os      # Para limpiar la pantalla de la consola
 
 # ---- Lista de palabras para el juego ----
-# Esta es nuestra "base de datos" de palabras posibles
-# El juego elegirá una al azar de esta lista
 PALABRAS = [
     "programacion", "python", "desarrollo", "computadora", "variable",
     "universidad", "ahorcado", "tecnologia", "algoritmo", "internet",
@@ -100,9 +98,80 @@ HANGMAN_PICS = [
     """
 ]
 
+# Variables globales para estadísticas
+estadisticas = {
+    'partidas_jugadas': 0,
+    'partidas_ganadas': 0,
+    'partidas_perdidas': 0
+}
+
 def limpiar_pantalla():
     """Limpia la pantalla de la consola"""
     os.system('cls' if os.name == 'nt' else 'clear')
+
+def mostrar_menu_principal():
+    """Muestra el menú principal del juego"""
+    limpiar_pantalla()
+    print("JUEGO DEL AHORCADO")
+    print("==================")
+    print()
+    print("1. Jugar")
+    print("2. Como jugar")
+    print("3. Estadisticas")
+    print("4. Salir")
+    print()
+
+def obtener_opcion_menu():
+    """Obtiene la opción seleccionada por el usuario"""
+    while True:
+        try:
+            opcion = int(input("Selecciona una opcion (1-4): "))
+            if opcion in [1, 2, 3, 4]:
+                return opcion
+            else:
+                print("Por favor selecciona una opcion valida (1-4)")
+        except ValueError:
+            print("Por favor ingresa un numero valido")
+
+def mostrar_instrucciones():
+    """Muestra las instrucciones del juego"""
+    limpiar_pantalla()
+    print("COMO JUGAR")
+    print("==========")
+    print()
+    print("1. La computadora elegira una palabra secreta al azar")
+    print("2. Veras espacios vacios (_ _ _) representando cada letra")
+    print("3. Debes adivinar letra por letra")
+    print("4. Si la letra esta en la palabra, se revelara en su posicion")
+    print("5. Si no esta, perderas un intento y se dibujara parte del ahorcado")
+    print("6. Ganas si completas la palabra antes de 6 intentos fallidos")
+    print("7. Pierdes si se completa el dibujo del ahorcado (6 fallos)")
+    print()
+    print("CONSEJOS:")
+    print("- Comienza con vocales (A, E, I, O, U)")
+    print("- Luego prueba consonantes comunes (R, S, T, L, N)")
+    print("- Piensa en el contexto de las palabras")
+    print()
+    input("Presiona Enter para volver al menu principal...")
+
+def mostrar_estadisticas():
+    """Muestra las estadísticas del jugador"""
+    limpiar_pantalla()
+    print("ESTADISTICAS")
+    print("============")
+    print()
+    print(f"Partidas jugadas: {estadisticas['partidas_jugadas']}")
+    print(f"Partidas ganadas: {estadisticas['partidas_ganadas']}")
+    print(f"Partidas perdidas: {estadisticas['partidas_perdidas']}")
+    
+    if estadisticas['partidas_jugadas'] > 0:
+        porcentaje_victoria = (estadisticas['partidas_ganadas'] / estadisticas['partidas_jugadas']) * 100
+        print(f"Porcentaje de victoria: {porcentaje_victoria:.1f}%")
+    else:
+        print("Porcentaje de victoria: 0.0%")
+    
+    print()
+    input("Presiona Enter para volver al menu principal...")
 
 def generar_palabra_secreta():
     """Genera una palabra secreta aleatoria de la lista"""
@@ -121,8 +190,8 @@ def mostrar_espacios_vacios(palabra_secreta, letras_adivinadas):
 def mostrar_estado_juego(palabra_secreta, letras_adivinadas, intentos_restantes, letras_incorrectas):
     """Muestra el estado actual del juego"""
     limpiar_pantalla()
-    print("🎮 JUEGO DEL AHORCADO 🎮")
-    print("=" * 30)
+    print("JUEGO DEL AHORCADO")
+    print("==================")
     
     # Mostrar el dibujo del ahorcado
     print(HANGMAN_PICS[intentos_restantes])
@@ -132,7 +201,7 @@ def mostrar_estado_juego(palabra_secreta, letras_adivinadas, intentos_restantes,
     print(f"Palabra: {espacios}")
     print(f"Letras incorrectas: {', '.join(sorted(letras_incorrectas)) if letras_incorrectas else 'Ninguna'}")
     print(f"Intentos restantes: {intentos_restantes}")
-    print("=" * 30)
+    print("==================")
 
 def jugador_teclea_letra():
     """Pide al jugador que teclee una letra"""
@@ -140,11 +209,11 @@ def jugador_teclea_letra():
         letra = input("Ingresa una letra: ").strip().upper()
         
         if len(letra) != 1:
-            print("⚠️ Por favor ingresa solo una letra.")
+            print("Por favor ingresa solo una letra.")
             continue
             
         if not letra.isalpha():
-            print("⚠️ Por favor ingresa solo letras.")
+            print("Por favor ingresa solo letras.")
             continue
             
         return letra
@@ -167,78 +236,104 @@ def jugador_sin_intentos(intentos_restantes):
 def preguntar_otro_intento():
     """Pregunta al jugador si quiere hacer otro intento (jugar de nuevo)"""
     while True:
-        respuesta = input("¿Quieres jugar otra vez? (S/N): ").strip().upper()
+        respuesta = input("Quieres jugar otra vez? (S/N): ").strip().upper()
         if respuesta in ['S', 'SI', 'Y', 'YES']:
             return True
         elif respuesta in ['N', 'NO']:
             return False
         else:
-            print("⚠️ Por favor responde S para Sí o N para No.")
+            print("Por favor responde S para Si o N para No.")
 
-def main():
-    """Función principal que sigue el diagrama de flujo"""
-    print("¡Bienvenido al Juego del Ahorcado!")
+def jugar_partida():
+    """Ejecuta una partida completa del juego y retorna True si ganó, False si perdió"""
+    # Generar una palabra secreta
+    palabra_secreta = generar_palabra_secreta()
+    letras_adivinadas = set()
+    letras_incorrectas = set()
+    intentos_restantes = 6
+    
+    print(f"\nNueva palabra generada (tiene {len(palabra_secreta)} letras)")
     input("Presiona Enter para comenzar...")
     
-    while True:  # Bucle principal para múltiples juegos
+    # Bucle principal del juego
+    while True:
+        # Mostrar los espacios vacíos
+        mostrar_estado_juego(palabra_secreta, letras_adivinadas, intentos_restantes, letras_incorrectas)
         
-        # 1. INICIO - Generar una palabra secreta
-        palabra_secreta = generar_palabra_secreta()
-        letras_adivinadas = set()
-        letras_incorrectas = set()
-        intentos_restantes = 6
+        # El jugador teclea la letra
+        letra = jugador_teclea_letra()
         
-        print(f"\n🎯 Nueva palabra generada (tiene {len(palabra_secreta)} letras)")
-        
-        # Bucle principal del juego
-        while True:
-            
-            # 2. Mostrar los espacios vacíos
-            mostrar_estado_juego(palabra_secreta, letras_adivinadas, intentos_restantes, letras_incorrectas)
-            
-            # 3. Indicar al jugador que adivine una letra
-            # 4. El jugador teclea la letra
-            letra = jugador_teclea_letra()
-            
-            # Verificar si ya se usó esta letra
-            if letra in letras_adivinadas or letra in letras_incorrectas:
-                print(f"⚠️ Ya intentaste la letra '{letra}'. Intenta con otra.")
-                input("Presiona Enter para continuar...")
-                continue
-            
-            # 5. ¿Letra correcta?
-            if letra_correcta(letra, palabra_secreta):
-                print(f"✅ ¡Correcto! La letra '{letra}' está en la palabra.")
-                letras_adivinadas.add(letra)
-                
-                # Verificar si el jugador completó la palabra
-                if jugador_completa_palabra(palabra_secreta, letras_adivinadas):
-                    mostrar_estado_juego(palabra_secreta, letras_adivinadas, intentos_restantes, letras_incorrectas)
-                    print(f"🎉 ¡FELICIDADES! ¡Ganaste!")
-                    print(f"La palabra era: {palabra_secreta}")
-                    break
-                    
-            else:
-                # 6. ¿Letra incorrecta?
-                print(f"❌ Incorrecto. La letra '{letra}' no está en la palabra.")
-                letras_incorrectas.add(letra)
-                intentos_restantes -= 1
-                
-                # Verificar si el jugador se quedó sin intentos
-                if jugador_sin_intentos(intentos_restantes):
-                    mostrar_estado_juego(palabra_secreta, letras_adivinadas, intentos_restantes, letras_incorrectas)
-                    print(f"💀 ¡Perdiste! Te quedaste sin intentos.")
-                    print(f"La palabra era: {palabra_secreta}")
-                    break
-            
+        # Verificar si ya se usó esta letra
+        if letra in letras_adivinadas or letra in letras_incorrectas:
+            print(f"Ya intentaste la letra '{letra}'. Intenta con otra.")
             input("Presiona Enter para continuar...")
+            continue
         
-        # 7. Preguntar al jugador si quiere hacer otro intento
+        # ¿Letra correcta?
+        if letra_correcta(letra, palabra_secreta):
+            print(f"Correcto! La letra '{letra}' esta en la palabra.")
+            letras_adivinadas.add(letra)
+            
+            # Verificar si el jugador completó la palabra
+            if jugador_completa_palabra(palabra_secreta, letras_adivinadas):
+                mostrar_estado_juego(palabra_secreta, letras_adivinadas, intentos_restantes, letras_incorrectas)
+                print(f"FELICIDADES! Ganaste!")
+                print(f"La palabra era: {palabra_secreta}")
+                input("Presiona Enter para continuar...")
+                return True  # Victoria
+                
+        else:
+            # Letra incorrecta
+            print(f"Incorrecto. La letra '{letra}' no esta en la palabra.")
+            letras_incorrectas.add(letra)
+            intentos_restantes -= 1
+            
+            # Verificar si el jugador se quedó sin intentos
+            if jugador_sin_intentos(intentos_restantes):
+                mostrar_estado_juego(palabra_secreta, letras_adivinadas, intentos_restantes, letras_incorrectas)
+                print(f"Perdiste! Te quedaste sin intentos.")
+                print(f"La palabra era: {palabra_secreta}")
+                input("Presiona Enter para continuar...")
+                return False  # Derrota
+        
+        input("Presiona Enter para continuar...")
+
+def ejecutar_juego():
+    """Ejecuta el modo de juego con múltiples partidas"""
+    while True:
+        # Jugar una partida
+        resultado = jugar_partida()
+        
+        # Actualizar estadísticas
+        estadisticas['partidas_jugadas'] += 1
+        if resultado:
+            estadisticas['partidas_ganadas'] += 1
+        else:
+            estadisticas['partidas_perdidas'] += 1
+        
+        # Preguntar si quiere jugar otra vez
         if not preguntar_otro_intento():
             break
+
+def main():
+    """Función principal que maneja el menú"""
+    print("Bienvenido al Juego del Ahorcado!")
+    input("Presiona Enter para continuar...")
     
-    # FIN
-    print("¡Gracias por jugar! 👋")
+    while True:
+        mostrar_menu_principal()
+        opcion = obtener_opcion_menu()
+        
+        if opcion == 1:  # Jugar
+            ejecutar_juego()
+        elif opcion == 2:  # Como jugar
+            mostrar_instrucciones()
+        elif opcion == 3:  # Estadísticas
+            mostrar_estadisticas()
+        elif opcion == 4:  # Salir
+            limpiar_pantalla()
+            print("Gracias por jugar!")
+            break
 
 # Ejecutar el programa
 if __name__ == "__main__":
