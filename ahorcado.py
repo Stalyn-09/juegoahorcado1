@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 """
 
 COMO FUNCIONA EL JUEGO:
